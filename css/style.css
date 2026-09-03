@@ -1139,8 +1139,12 @@ body::before {
 }
 .block.explain p:last-child { margin-bottom: 0; }
 /* 文段内术语强调：竹青加粗 */
-.term { font-weight: 700; color: var(--teal); }
-.md-bold { font-weight: 700; color: var(--ink); }
+/* 术语概念：金赭/秋金加粗（偏金、醒目但不刺眼） */
+.term { font-weight: 800; color: #a37e2e; }
+/* 最重点：朱砂色加粗（朱笔圈点感，视觉最突出） */
+.md-bold { font-weight: 800; color: var(--cinnabar); }
+/* 易错提醒：墨字 + 细朱砂下划线（紧贴文字） */
+.mark-underline { text-decoration: underline; text-decoration-color: var(--cinnabar); text-underline-offset: 0px; text-decoration-thickness: 1px; color: var(--ink); font-weight: 700; }
 /* 顶栏重置进度按钮 */
 .reset-btn { font-size: 12.5px; padding: 5px 13px; flex-shrink: 0; }
 
@@ -1161,7 +1165,8 @@ body::before {
 .fmt-name { font-weight: 700; white-space: nowrap; font-size: 13px; }
 .fmt-example { font-size: 12px; color: var(--ink-faint); }
 .fmt-row { margin: 3px 0; }
-.fmt-line { display: inline-flex; flex-wrap: wrap; gap: 2px; align-items: center; font-family: var(--font-ui); }
+.fmt-line { display: block; font-family: var(--font-ui); }
+.fmt-sentence { display: block; margin: 2px 0; }
 .fmt-chip { display: inline-block; min-width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 3px; font-size: 13px; font-weight: 700; padding: 0 2px; }
 .fmt-chip.ping { background: var(--teal); color: #f2f7f2; }
 .fmt-chip.ze { background: var(--cinnabar); color: #fdf4f2; }
@@ -1170,6 +1175,22 @@ body::before {
 .fmt-punct { color: var(--ink-faint); margin: 0 1px; font-weight: 700; }
 .fmt-rhyme { color: var(--cinnabar); font-size: 11px; border-bottom: 2px solid var(--cinnabar); margin-left: 1px; }
 .fmt-other { color: var(--ink); }
+/* 行内小引用 cite */
+.cite-block {
+  background: linear-gradient(90deg, rgba(169,142,95,.10), rgba(251,248,241,0) 70%), var(--wash);
+  border-left: 3px solid var(--gold);
+  padding: 12px 18px;
+}
+.cite-text { font-family: var(--font-poem); font-size: 14px; line-height: 1.9; margin: 0; text-indent: 0; }
+.cite-source { text-align: right; font-size: 11.5px; color: var(--ochre); margin-top: 4px; font-family: var(--font-ui); }
+/* 对比引用 compare（两栏） */
+.compare-block { }
+.compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+.compare-col { background: var(--wash); border: 1px solid var(--line); border-radius: 4px; padding: 12px 16px; }
+.compare-who { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--teal); margin-bottom: 6px; }
+.compare-text { font-family: var(--font-poem); font-size: 13.5px; line-height: 1.85; margin: 0; text-indent: 0; }
+.compare-source { text-align: right; font-size: 11px; color: var(--ochre); margin-top: 4px; font-family: var(--font-ui); }
+@media (max-width: 820px) { .compare-cols { grid-template-columns: 1fr; } }
 /* 格式 ↔ 例诗 切换 */
 .fmt-switch { margin-top: 6px; }
 .fmt-toggle { font-family: var(--font-ui); font-size: 12px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--wash); color: var(--ink-soft); cursor: pointer; transition: all .2s; }
