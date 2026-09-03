@@ -49,22 +49,28 @@
     return out;
   }
 
-  /** 富文本渲染：HTML 转义 → **加粗** → 术语竹青高亮 */
+  /** 富文本渲染：HTML 转义 → 语义强调标记（**加粗** / ==变色== / __下划线__）
+   *  强调完全由数据文本里的标记决定（结合语义标注），不再按术语表机械替换 */
   function renderRich(text) {
     if (text == null) return '';
     var s = escapeHtml(text);
     var tokens = {}, counter = 0;
+    // **…** → 墨色加粗（句中最强重点 / 定义核心）
     s = s.replace(/\*\*([^*]+)\*\*/g, function (m, inner) {
       var k = '' + (counter++) + '';
       tokens[k] = '<strong class="md-bold">' + inner + '</strong>';
       return k;
     });
-    var re = new RegExp('(' + TERMS.map(function (t) {
-      return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }).join('|') + ')', 'g');
-    s = s.replace(re, function (m) {
+    // ==…== → 竹青变色（术语 / 关键概念强调）
+    s = s.replace(/==([^=]+)==/g, function (m, inner) {
       var k = '' + (counter++) + '';
-      tokens[k] = '<strong class="term">' + m + '</strong>';
+      tokens[k] = '<strong class="term">' + inner + '</strong>';
+      return k;
+    });
+    // __…__ → 朱砂下划线（易错 / 需特别留意）
+    s = s.replace(/__([^_]+)__/g, function (m, inner) {
+      var k = '' + (counter++) + '';
+      tokens[k] = '<span class="mark-underline">' + inner + '</span>';
       return k;
     });
     for (var kk in tokens) s = s.split(kk).join(tokens[kk]);
@@ -291,6 +297,25 @@
         h.push('<blockquote class="quote-text">' + renderRich(c.text) + '</blockquote>');
         h.push('<div class="quote-source">—— ' + escapeHtml(c.source) + '</div>');
         h.push('</section>');
+        break;
+      case 'cite':
+        h.push('<div class="block cite-block" data-idx="' + idx + '">');
+        h.push('<blockquote class="cite-text">' + renderRich(c.text) + '</blockquote>');
+        h.push('<div class="cite-source">—— ' + escapeHtml(c.source) + '</div>');
+        h.push('</div>');
+        break;
+      case 'compare':
+        h.push('<div class="block compare-block" data-idx="' + idx + '">');
+        if (c.title) h.push('<h3>' + escapeHtml(c.title) + '</h3>');
+        h.push('<div class="compare-cols">');
+        c.rows.forEach(function (row) {
+          h.push('<div class="compare-col">' +
+                   '<div class="compare-who">' + escapeHtml(row.who) + '</div>' +
+                   '<blockquote class="compare-text">' + renderRich(row.text) + '</blockquote>' +
+                   '<div class="compare-source">—— ' + escapeHtml(row.source) + '</div>' +
+                 '</div>');
+        });
+        h.push('</div></div>');
         break;
       default:
         return '';
