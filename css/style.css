@@ -1231,3 +1231,73 @@ td.show-poem .fmt-poem, .qr-card.show-poem .fmt-poem { display: block; }
   font-family: var(--font-ui);
   letter-spacing: .04em;
 }
+
+/* ============================================================
+   格律概念速查（v1.4）
+   ============================================================ */
+.cc-search { margin: 4px 0 16px; }
+.cc-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  padding: 9px 14px;
+  color: var(--ink);
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  outline: none;
+}
+.cc-search-input:focus { border-color: var(--ochre); box-shadow: 0 0 0 2px rgba(169,142,95,.15); }
+.cc-group { margin-bottom: 20px; }
+.cc-group-title {
+  font-family: var(--font-head);
+  font-size: 15px;
+  color: var(--cinnabar);
+  margin: 0 0 10px;
+  padding-left: 8px;
+  border-left: 3px solid var(--cinnabar);
+}
+.cc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cc-card {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+}
+.cc-term {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ochre);
+  margin-bottom: 6px;
+  letter-spacing: .5px;
+}
+.cc-brief { font-size: 14px; line-height: 1.8; color: var(--ink); }
+.cc-points { margin: 8px 0 0; padding-left: 20px; }
+.cc-points li { font-size: 13px; line-height: 1.8; color: var(--ink-soft); margin-bottom: 3px; }
+.cc-example {
+  margin-top: 8px;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  background: rgba(232,224,204,.45);
+  border-left: 2px solid var(--gold);
+  border-radius: 0 3px 3px 0;
+}
+.cc-node {
+  margin-top: 10px;
+  align-self: flex-start;
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  color: var(--cinnabar);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 3px 12px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.cc-node:hover { background: var(--wash); border-color: var(--cinnabar); }
