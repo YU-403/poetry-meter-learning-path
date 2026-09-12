@@ -1301,3 +1301,7 @@ td.show-poem .fmt-poem, .qr-card.show-poem .fmt-poem { display: block; }
   transition: background .15s, border-color .15s;
 }
 .cc-node:hover { background: var(--wash); border-color: var(--cinnabar); }
+
+/* 入声字·今读平声：辨别规律 */
+.rp-rules { margin: 8px 0 4px; padding-left: 22px; }
+.rp-rules li { font-size: 14px; line-height: 1.9; color: var(--ink-soft); margin-bottom: 5px; }
