@@ -736,6 +736,7 @@
     h.push(accPanel('pingshui', '平水韵 106 韵', renderPingshui(QUICKREF.pingshui106)));
     h.push(accPanel('jueju', '绝句平仄格式速查', renderJueju(QUICKREF.jueju_formats)));
     h.push(accPanel('rusheng', '常用入声字表', renderRusheng(QUICKREF.rusheng)));
+    h.push(accPanel('rusheng-ping', '入声字 · 今读平声', renderRushengPing(QUICKREF.rusheng_ping)));
     h.push(accPanel('linyun', '古体诗邻韵通用', renderLinyun(QUICKREF.linyun)));
     h.push(accPanel('cilin', '词林正韵十九部', renderCilin(QUICKREF.cilin)));
     h.push(accPanel('duizhang', '对仗分类', renderDuizhang(QUICKREF.duizhang)));
@@ -925,6 +926,20 @@
              '<div class="rs-chars">' + escapeHtml(g.chars) + '</div></details>';
     }).join('');
     return '<p class="acc-intro">' + escapeHtml(s.intro) + '</p>' + groups +
+           '<p class="acc-source">来源：' + escapeHtml(s.source) + '</p>';
+  }
+
+  /** 入声字 · 今读平声（易误作平声的仄声字）*/
+  function renderRushengPing(s) {
+    if (!s) return '';
+    var rules = (s.rules || []).map(function (r) { return '<li>' + renderRich(r) + '</li>'; }).join('');
+    return '<p class="acc-intro">' + renderRich(s.intro) + '</p>' +
+           '<h4>今读阴平（' + s.yin.length + ' 字）</h4>' +
+           '<div class="rs-chars">' + escapeHtml(s.yin) + '</div>' +
+           '<h4>今读阳平（' + s.yang.length + ' 字）</h4>' +
+           '<div class="rs-chars">' + escapeHtml(s.yang) + '</div>' +
+           '<h4>辨别规律</h4><ul class="rp-rules">' + rules + '</ul>' +
+           (s.note ? '<p class="acc-intro">' + renderRich(s.note) + '</p>' : '') +
            '<p class="acc-source">来源：' + escapeHtml(s.source) + '</p>';
   }
 
