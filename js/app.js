@@ -731,7 +731,7 @@
 
     var h = [];
     h.push('<h2 class="qr-title">速查表</h2>');
-    h.push('<p class="qr-note">汇集平水韵、绝句平仄格式、入声字、邻韵通用、词林正韵与对仗分类，供随时查阅。</p>');
+    h.push('<p class="qr-note">汇集平水韵、绝句平仄格式、入声字、邻韵通用、词林正韵、对仗分类与格律概念，供随时查阅。</p>');
 
     h.push(accPanel('pingshui', '平水韵 106 韵', renderPingshui(QUICKREF.pingshui106)));
     h.push(accPanel('jueju', '绝句平仄格式速查', renderJueju(QUICKREF.jueju_formats)));
@@ -739,6 +739,7 @@
     h.push(accPanel('linyun', '古体诗邻韵通用', renderLinyun(QUICKREF.linyun)));
     h.push(accPanel('cilin', '词林正韵十九部', renderCilin(QUICKREF.cilin)));
     h.push(accPanel('duizhang', '对仗分类', renderDuizhang(QUICKREF.duizhang)));
+    h.push(accPanel('concepts', '格律概念速查', renderConcepts(QUICKREF.concepts)));
 
     // 例诗库专区（规格书 4.7）
     h.push('<h2 class="qr-title" style="margin-top:28px">例诗库</h2>');
@@ -960,6 +961,45 @@
            '<p class="acc-source">来源：' + escapeHtml(s.source) + '</p>';
   }
 
+  /* ---- 格律概念速查（v1.4）---- */
+  function renderConcepts(s) {
+    if (!s || !s.groups) return '';
+    var groups = s.groups.map(function (g) {
+      var cards = g.items.map(function (it) {
+        var pts = (it.points && it.points.length)
+          ? '<ul class="cc-points">' + it.points.map(function (p) { return '<li>' + renderRich(p) + '</li>'; }).join('') + '</ul>'
+          : '';
+        var ex = it.example ? '<div class="cc-example">' + renderRich(it.example) + '</div>' : '';
+        var link = it.node ? '<button class="cc-node" data-goto-node="' + escapeHtml(it.node) + '">前往学习节点 →</button>' : '';
+        var hay = (it.term + ' ' + it.brief + ' ' + (it.points || []).join(' ')).toLowerCase();
+        return '<div class="cc-card" data-search="' + escapeHtml(hay) + '">' +
+                 '<div class="cc-term">' + escapeHtml(it.term) + '</div>' +
+                 '<div class="cc-brief">' + renderRich(it.brief) + '</div>' +
+                 pts + ex + link +
+               '</div>';
+      }).join('');
+      return '<div class="cc-group"><h4 class="cc-group-title">' + escapeHtml(g.name) + '</h4>' +
+             '<div class="cc-grid">' + cards + '</div></div>';
+    }).join('');
+    return '<p class="acc-intro">' + escapeHtml(s.intro) + '</p>' +
+           '<div class="cc-search"><input type="text" class="cc-search-input" placeholder="输入术语或关键词过滤（如：孤平、拗救、押韵、对仗）"></div>' +
+           '<div class="cc-wrap">' + groups + '</div>' +
+           (s.source ? '<p class="acc-source">来源：' + escapeHtml(s.source) + '</p>' : '');
+  }
+
+  /** 概念速查：关键词过滤 */
+  function filterConcepts(q) {
+    q = (q || '').trim().toLowerCase();
+    $all('#quickref-view .cc-card').forEach(function (card) {
+      card.style.display = (!q || (card.dataset.search || '').indexOf(q) >= 0) ? '' : 'none';
+    });
+    $all('#quickref-view .cc-group').forEach(function (g) {
+      var any = false;
+      $all('.cc-card', g).forEach(function (c) { if (c.style.display !== 'none') any = true; });
+      g.style.display = any ? '' : 'none';
+    });
+  }
+
   /* ============================================================
      页签切换
      ============================================================ */
@@ -1069,8 +1109,23 @@
         return;
       }
 
+      // 概念速查：跳转学习节点
+      var cn = e.target.closest('[data-goto-node]');
+      if (cn) {
+        e.preventDefault();
+        var nid = cn.dataset.gotoNode;
+        if (nodeById(nid)) { switchTab('path'); renderNode(nid); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        return;
+      }
+
       // 其它区域点击 → 关闭浮层
       hideTooltip();
+    });
+
+    // 概念速查：搜索过滤
+    document.addEventListener('input', function (e) {
+      var inp = e.target.closest('.cc-search-input');
+      if (inp) filterConcepts(inp.value);
     });
 
     // 页面滚动 → 关闭浮层
