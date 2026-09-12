@@ -736,11 +736,14 @@
     h.push(accPanel('pingshui', '平水韵 106 韵', renderPingshui(QUICKREF.pingshui106)));
     h.push(accPanel('jueju', '绝句平仄格式速查', renderJueju(QUICKREF.jueju_formats)));
     h.push(accPanel('rusheng', '常用入声字表', renderRusheng(QUICKREF.rusheng)));
-    h.push(accPanel('rusheng-ping', '入声字 · 今读平声', renderRushengPing(QUICKREF.rusheng_ping)));
     h.push(accPanel('linyun', '古体诗邻韵通用', renderLinyun(QUICKREF.linyun)));
     h.push(accPanel('cilin', '词林正韵十九部', renderCilin(QUICKREF.cilin)));
     h.push(accPanel('duizhang', '对仗分类', renderDuizhang(QUICKREF.duizhang)));
     h.push(accPanel('concepts', '格律概念速查', renderConcepts(QUICKREF.concepts)));
+
+    // 入声字 · 今读平声（顶层独立章节）
+    h.push('<h2 class="qr-title" style="margin-top:34px">入声字 · 今读平声</h2>');
+    h.push('<div class="qr-section">' + renderRushengPing(QUICKREF.rusheng_ping) + '</div>');
 
     // 例诗库专区（规格书 4.7）
     h.push('<h2 class="qr-title" style="margin-top:28px">例诗库</h2>');
